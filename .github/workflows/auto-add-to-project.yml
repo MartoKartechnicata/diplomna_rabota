@@ -1,0 +1,23 @@
+name: Auto Add Issues to Project
+
+on:
+    types:
+      - opened
+
+jobs:
+  add-to-project:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Add to Project
+      uses: actions/github-script@v6
+      with:
+        script: |
+          const { data } = await github.projects.createCard({
+            column_id: '1',  // Replace with your column ID
+            content_id: context.issue.id,
+            content_type: 'Issue'
+          });
+          console.log(data);
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
